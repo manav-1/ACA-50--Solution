@@ -7,9 +7,9 @@ const image = {
 };
 export default function App({ navigation }) {
   useEffect(() => {
-    // setTimeout(() => {
-    //   navigation.push("LoginScreen");
-    // }, 1000);
+    setTimeout(() => {
+      navigation.push("LoginScreen");
+    }, 1000);
   }, []);
   return (
     <View style={styles.container}>

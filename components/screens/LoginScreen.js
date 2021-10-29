@@ -13,6 +13,7 @@ import ORDivider from "../customComponents/ORDivider";
 import SocialIcon from "../customComponents/SocialIcon";
 import { SafeAreaView } from "react-native-safe-area-context";
 import firebase from "../FirebaseConfig";
+import { Audio } from "expo-av";
 
 const image = {
   uri: "https://images.unsplash.com/photo-1627042633145-b780d842ba45?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
@@ -22,6 +23,8 @@ export default function App({ navigation }) {
   const [number, setNumber] = useState("");
   const [type, setType] = useState("mail");
   const [mail, setMail] = useState("");
+  const [sound, setSound] = useState(null);
+  // ! This code is kind of optional, just for not letting the user get Back to the Home Screen
   useEffect(
     () =>
       navigation.addListener("beforeRemove", (e) => {
@@ -36,6 +39,16 @@ export default function App({ navigation }) {
   }
   function handleMailLogin() {
     type == "number" ? setType("mail") : setType("number");
+  }
+  async function playSound() {
+    console.log("Loading Sound");
+    const { sound } = await Audio.Sound.createAsync(
+      require("../../assets/point.wav")
+    );
+    setSound(sound);
+
+    console.log("Playing Sound");
+    await sound.playAsync();
   }
   return (
     <ImageBackground
@@ -94,7 +107,10 @@ export default function App({ navigation }) {
             }}
           >
             <SocialIcon
-              onPress={handleMailLogin}
+              onPress={() => {
+                playSound();
+                handleMailLogin();
+              }}
               icon={
                 type == "number"
                   ? require("../../assets/mail.png")
@@ -103,12 +119,14 @@ export default function App({ navigation }) {
             />
             <SocialIcon
               onPress={() => {
+                playSound();
                 console.log("Google Login");
               }}
               icon={require("../../assets/google.png")}
             />
             <SocialIcon
               onPress={() => {
+                playSound();
                 console.log("Facebook Login");
               }}
               icon={require("../../assets/facebook.png")}
