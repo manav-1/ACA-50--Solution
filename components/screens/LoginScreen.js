@@ -36,6 +36,7 @@ export default function App({ navigation }) {
   function handleButtonPress() {
     console.log(number);
     console.log(mail);
+    navigation.navigate("HomeStack");
   }
   function handleMailLogin() {
     type == "number" ? setType("mail") : setType("number");
