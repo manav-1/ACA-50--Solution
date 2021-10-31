@@ -20,8 +20,8 @@ const image = {
 };
 
 export default function App({ navigation }) {
-  const [password, setPassword] = useState("");
-  const [mail, setMail] = useState("");
+  const [password, setPassword] = useState("121212");
+  const [mail, setMail] = useState("manav@gmail.com");
   const [sound, setSound] = useState(null);
   // ! This code is kind of optional, just for not letting the user get Back to the Home Screen
   useEffect(() => {
@@ -118,7 +118,7 @@ export default function App({ navigation }) {
             </Text>
           </TouchableOpacity>
           <ORDivider />
-          <View
+           <View
             style={{
               display: "flex",
               flexDirection: "row",
