@@ -20,26 +20,34 @@ const image = {
 };
 
 export default function App({ navigation }) {
-  const [number, setNumber] = useState("");
-  const [type, setType] = useState("mail");
+  const [password, setPassword] = useState("");
   const [mail, setMail] = useState("");
   const [sound, setSound] = useState(null);
   // ! This code is kind of optional, just for not letting the user get Back to the Home Screen
-  useEffect(
-    () =>
-      navigation.addListener("beforeRemove", (e) => {
-        // Prevent default behavior of leaving the screen
-        e.preventDefault();
-      }),
-    []
-  );
-  function handleButtonPress() {
-    console.log(number);
+  useEffect(() => {
+    navigation.addListener("beforeRemove", (e) => {
+      // Prevent default behavior of leaving the screen
+      e.preventDefault();
+    });
+
+    return async () => {
+      await sound.unloadAsync();
+    };
+  }, []);
+  async function handleButtonPress() {
     console.log(mail);
+    console.log(password);
+    await firebase
+      .auth()
+      .createUserWithEmailAndPassword(mail, password)
+      .then((user) => {
+        const userDetails = user.user;
+        console.info(userDetails);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
     navigation.navigate("HomeStack");
-  }
-  function handleMailLogin() {
-    type == "number" ? setType("mail") : setType("number");
   }
   async function playSound() {
     console.log("Loading Sound");
@@ -60,14 +68,25 @@ export default function App({ navigation }) {
       <View style={[styles.gradient, StyleSheet.absoluteFill]}>
         <View style={styles.logincontainer}>
           <TextInput
-            value={type == "number" ? number : mail}
-            onChangeText={(val) =>
-              type == "number" ? setNumber(val) : setMail(val)
-            }
-            placeholder={
-              type == "number" ? "Enter Phone Number" : "Enter Email Address"
-            }
-            keyboardType={type == "number" ? "number-pad" : "default"}
+            value={mail}
+            onChangeText={(val) => setMail(val)}
+            placeholder="Enter Email Address"
+            keyboardType={"default"}
+            style={{
+              backgroundColor: "#fff",
+              padding: 10,
+              borderRadius: 5,
+              fontFamily: "karlaLight",
+              fontSize: 16,
+              marginBottom: 10,
+            }}
+          />
+          <TextInput
+            value={password}
+            onChangeText={(val) => setPassword(val)}
+            placeholder={"Enter Password"}
+            keyboardType={"default"}
+            secureTextEntry
             style={{
               backgroundColor: "#fff",
               padding: 10,
@@ -95,7 +114,7 @@ export default function App({ navigation }) {
                 fontFamily: "karlaLight",
               }}
             >
-              Send OTP
+              Sign Up
             </Text>
           </TouchableOpacity>
           <ORDivider />
@@ -110,13 +129,9 @@ export default function App({ navigation }) {
             <SocialIcon
               onPress={() => {
                 playSound();
-                handleMailLogin();
+                console.log("Number Login");
               }}
-              icon={
-                type == "number"
-                  ? require("../../assets/mail.png")
-                  : require("../../assets/phone-call.png")
-              }
+              icon={require("../../assets/phone-call.png")}
             />
             <SocialIcon
               onPress={() => {

@@ -5,17 +5,21 @@
 import firebase from "firebase";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCKJO29cykxufeTNh7SALb_T61Z33VZ3K8",
-  authDomain: "zomato-app-trial.firebaseapp.com",
-  projectId: "zomato-app-trial",
-  storageBucket: "zomato-app-trial.appspot.com",
-  messagingSenderId: "298744699635",
-  appId: "1:298744699635:web:37141453747d7f9a3b7586",
-  measurementId: "G-CV3G7MNHDK",
+  apiKey: "AIzaSyCouq5WSz26g6IPR6vSo3WTR2dTaQgvwzw",
+  authDomain: "coronatesting-81628.firebaseapp.com",
+  databaseURL: "https://coronatesting-81628.firebaseio.com",
+  projectId: "coronatesting-81628",
+  storageBucket: "coronatesting-81628.appspot.com",
+  messagingSenderId: "51288101238",
+  appId: "1:51288101238:web:8583b152a72d28e46dea57",
 };
 
 // const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+} else {
+  firebase.app(); // if already initialized, use that one
+}
 
 export default firebase;
